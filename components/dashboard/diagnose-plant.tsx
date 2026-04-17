@@ -49,9 +49,6 @@ function parseMarkdownContent(text: string): React.ReactNode[] {
 
 // Format inline markdown (**bold**, *italic*, etc.)
 function formatInlineMarkdown(text: string): React.ReactNode[] {
-  const parts: (string | JSX.Element)[] = [];
-  let lastIndex = 0;
-  
   // Handle **bold**
   const boldRegex = /\*\*([^*]+)\*\*/g;
   let match;
@@ -104,7 +101,8 @@ function formatInlineMarkdown(text: string): React.ReactNode[] {
 
 // Parse and format diagnosis text
 function parseDiagnosis(text: string) {
-  const sections: { title: string; content: JSX.Element; icon: React.ReactNode; color: string }[] = [];
+  // CHANGED: JSX.Element is now React.ReactNode to prevent namespace build errors
+  const sections: { title: string; content: React.ReactNode; icon: React.ReactNode; color: string }[] = [];
   
   const lines = text.split('\n');
   let currentSection = '';
