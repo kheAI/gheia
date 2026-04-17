@@ -2,11 +2,11 @@ import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  serverActions: {
-    bodySizeLimit: '10mb',
-    allowedOrigins: ['*.run.app'],
-  },
   experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+      allowedOrigins: ['*.run.app'],
+    },
   },
   eslint: {
     ignoreDuringBuilds: true,
