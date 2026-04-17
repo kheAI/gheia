@@ -2,8 +2,10 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-// Initialize the Gemini client securely on the server
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Initialize the Gemini client securely. 
+// Uses GEMINI_API_KEY for standard deployments, falling back to NEXT_PUBLIC_GEMINI_API_KEY.
+const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+const ai = new GoogleGenAI({ apiKey });
 
 /**
  * Server Action to diagnose plant health using Gemini Multimodal API.
