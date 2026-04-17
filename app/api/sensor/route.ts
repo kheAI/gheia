@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAuth0Token } from '@/lib/auth0';
+import { insertSensorReading } from '@/lib/snowflake';
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,7 +27,18 @@ export async function POST(req: NextRequest) {
     // 4. Token is valid. Process the payload
     const data = await req.json();
     
-    // In a real application, you might save data to a database here.
+    // 5. Data Lake Ingest (Snowflake)
+    // We run this asynchronously so we don't block the immediate 2xx response to the sensor
+    const nodeId = data.nodeId || 'unknown-device';
+    insertSensorReading(nodeId, data).catch(err => {
+      console.error('[Sensor API] Failed to archive to Snowflake:', err);
+    });
+
+    // For this demo, we'll save it to our in-memory store so the UI can see it!
+    import('@/lib/store').then(({ addReading }) => {
+      addReading(data);
+    });
+
     console.log('[Sensor API] Received authenticated payload:', data);
     console.log('[Sensor API] From Client/App ID:', decodedToken.sub);
 
