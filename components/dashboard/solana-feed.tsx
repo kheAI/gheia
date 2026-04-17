@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { mintLeafToken, SolanaTransactionReceipt } from "@/services/solana";
+import { authorizeDataHashToChain, SolanaTransactionReceipt } from "@/services/solana";
 
 export function SolanaFeed() {
   const [transactions, setTransactions] = useState<SolanaTransactionReceipt[]>([]);
@@ -22,7 +22,7 @@ export function SolanaFeed() {
     const fetchMocks = async () => {
       // Mock minting a token for demonstration
       try {
-        const result = await mintLeafToken("GaiaUser123_PublicKey_Mock", 250);
+        const result = await authorizeDataHashToChain("UI_DEMO_NODE", JSON.stringify({ event: 'ui_mount' }));
         
         const mockHistory: SolanaTransactionReceipt[] = [
           result,
